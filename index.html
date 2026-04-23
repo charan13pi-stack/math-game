@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Math Game</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#141e30">
+
+<style>
+body{
+    font-family: Arial;
+    background: linear-gradient(135deg,#141e30,#243b55);
+    color:white;
+    margin:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    flex-direction:column;
+}
+
+.wrap{
+    text-align:center;
+}
+
+.card{
+    width:350px;
+    background:white;
+    color:black;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.3);
+}
+
+button{
+    width:80%;
+    padding:10px;
+    margin:5px;
+    border:none;
+    border-radius:8px;
+    background:#00aaff;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0088cc;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="wrap">
+
+    <h2>⚡ แบบทดสอบคณิตคิดเร็ว ⚡</h2>
+
+    <div id="startScreen">
+        <h3>พร้อมรึยัง</h3>
+        <button onclick="startGame()">เริ่มเลย</button>
+    </div>
+
+    <div class="card" id="game" style="display:none;">
+
+        <h2 id="question">Loading...</h2>
+
+        <button onclick="answer(0)" id="b0"></button>
+        <button onclick="answer(1)" id="b1"></button>
+        <button onclick="answer(2)" id="b2"></button>
+
+        <h3 id="feedback"></h3>
+        <h3 id="score"></h3>
+
+        <button onclick="restartGame()" id="restart" style="display:none;">
+            🔄 เล่นอีกครั้ง
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+let score = 0;
+let count = 0;
+let current;
+
+function startGame(){
+    document.getElementById("startScreen").style.display="none";
+    document.getElementById("game").style.display="block";
+
+    score = 0;
+    count = 0;
+
+    document.getElementById("feedback").innerText="";
+    document.getElementById("score").innerText="";
+
+    nextQ();
+}
+
+function nextQ(){
+    let a = Math.floor(Math.random()*20);
+    let b = Math.floor(Math.random()*20);
+    let op = Math.random()>0.5?"+":"-";
+
+    let correct = op=="+"?a+b:a-b;
+
+    let arr = [
+        correct,
+        correct+1,
+        correct-1
+    ];
+
+    arr.sort(()=>Math.random()-0.5);
+
+    current = {q:`${a} ${op} ${b} = ?`, a:arr, c:correct};
+
+    document.getElementById("question").innerText = current.q;
+    document.getElementById("b0").innerText = arr[0];
+    document.getElementById("b1").innerText = arr[1];
+    document.getElementById("b2").innerText = arr[2];
+
+    document.getElementById("restart").style.display="none";
+}
+
+function answer(i){
+
+    if(current.a[i] == current.c){
+        score += 100;
+        document.getElementById("feedback").innerText = "✔ Correct! +100";
+    } else {
+        document.getElementById("feedback").innerText = "❌ Wrong!";
+    }
+
+    count++;
+    document.getElementById("score").innerText = "Score: " + score;
+
+    if(count < 5){
+        nextQ();
+    } else {
+        endGame();
+    }
+}
+
+function endGame(){
+    document.getElementById("question").innerText = "เกมจบแล้ว!";
+    document.getElementById("feedback").innerText = "คะแนนรวม: " + score;
+
+    document.getElementById("b0").style.display="none";
+    document.getElementById("b1").style.display="none";
+    document.getElementById("b2").style.display="none";
+
+    document.getElementById("restart").style.display="block";
+}
+
+function restartGame(){
+    document.getElementById("b0").style.display="block";
+    document.getElementById("b1").style.display="block";
+    document.getElementById("b2").style.display="block";
+
+    startGame();
+}
+</script>
+
+<!-- PWA -->
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+</script>
+
+</body>
+</html>
