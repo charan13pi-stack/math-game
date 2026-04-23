@@ -1,6 +1,7 @@
 {
   "name": "Math Game",
   "short_name": "MathGame",
+  "id": "math-game",
   "description": "เกมคณิตศาสตร์ฝึกคิดเร็ว เล่นสนุก",
   "start_url": "./index.html",
   "display": "standalone",
