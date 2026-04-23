@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Math Game</title>
 
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#141e30">
 
 <style>
@@ -165,10 +165,9 @@ function restartGame(){
 }
 </script>
 
-<!-- PWA -->
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
+  navigator.serviceWorker.register("./sw.js");
 }
 </script>
 
